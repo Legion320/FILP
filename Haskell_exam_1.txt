@@ -1,0 +1,19 @@
+data Tree a = Leaf | Node (Tree a) a (Tree a) deriving (Show)
+
+singleton :: a -> Tree a
+singleton x = Node Leaf x Leaf
+
+treeInsert :: (Ord a) => a -> Tree a -> Tree a
+treeInsert x Leaf = singleton x
+treeInsert x (Node left a right)
+ | x == a = Node left x right
+ | x < a = Node (treeInsert x left) a right
+ | x > a = Node left a (treeInsert x right)
+ 
+treeSum :: Tree Integer -> Integer
+treeSum Leaf = 0
+treeSum (Node left x right) = x + treeSum left + treeSum right
+
+treeHeight :: Tree a -> Integer
+treeHeight Leaf = 0
+treeHeight (Node left x right) = 1 + max (treeHeight right) (treeHeight left)
